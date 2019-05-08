@@ -1,0 +1,23 @@
+
+#log-btn{
+    background-color: #2a4451;
+    color:#FEC93D;
+}
+#log-btn-secondary{
+    background-color: rgba(44,98,125,1);
+    color:white;
+    
+}
+#card-head-log{
+    background-color: #FEC93D;
+    
+    color: #2a4451;
+}
+#card-body-log{
+
+    
+    color: #2a4451;
+}
+#card-body-log{
+    background: #2a44518c !important;
+}
