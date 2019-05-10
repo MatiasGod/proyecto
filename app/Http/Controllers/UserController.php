@@ -25,16 +25,24 @@ class UserController extends Controller
     }
 
     public function delete(Request $request){
+        if (empty($request->id)) {
+            return redirect()->route('referees')->with("error" ,"La id es requerido");
+        }
         $users = User::find($request->id)->delete();
-        return ['users' => User::all(),'message' => 'Se ha borrado correctamente el usuario'];
+        return ['users' => User::all()];
     }
 
     public function restore(Request $request){
+        if (empty($request->id)) {
+            return redirect()->route('referees')->with("error" ,"La id es requerido");
+        }
+        //RECUPERAMOS LOS USUARIOS ELIMINADOS
         $users = User::onlyTrashed()->find($request->id)->restore();
-        return ['users' => User::all(),'message' => 'Se ha recuperado correctamente el usuario'];
+        return ['users' => User::all()];
     }
 
     public function showTrashed (){
+        //MOSTRAMOS LOS USUARIOS ELIMINADOS POR SOFTDELETES
         $users = User::onlyTrashed()->get();
         return ['userTrash' => $users];
     }
@@ -42,6 +50,7 @@ class UserController extends Controller
     public function getAllUsers(){
         return ['users' => User::all()];
     }
+
     public function getSomeUsers($name){
         return ['users' => User::where('name','like','%'.$name.'%')
                     ->orWhere('surname','like','%'.$name.'%')->get()];
@@ -50,14 +59,48 @@ class UserController extends Controller
     public function getProfile(){
         return view('users.update', ['users' => User::find(Auth::id())]);
     }
+
     public function updateInformation(Request $request){
+        if (empty($request->id)) {
+            return redirect()->route('referees')->with("error" ,"La id es requerido");
+        }
         return view('users.update',['users' => User::find($request->id)]);
     }
+
     public function createUserFile(Request $request){
         
         $file = $request->file('excel');
         $users=[];
         $array = Excel::toArray(new Excel, $file);
+        $rules = array(
+            '0' => 'required',
+            '1' => 'required',
+            '2' => 'required',
+            '3' => 'required|email',
+        );    
+        $messages = array(
+            '0.required' => 'La codigo del árbitro es requerida',
+            '1.required' => 'El nombre es requerido',
+            '2.required' => 'El apellido es requerido',
+            '3.required' => 'El email es requerido',
+            '3.email' => 'El formato del email es incorrecto',
+        );
+        /**COMPROBAMOS QUE LA ESTRUCTURA DEL EXCEL ES LA CORRECTA */
+        foreach ($array[0] as $rows) {
+            $row=[
+               0 => $rows[0], 
+               1 => $rows[1],
+               2 => $rows[2], 
+               3 => $rows[3], 
+            ];
+            $validator = Validator::make($rows, $rules, $messages);
+        
+            if ($validator->fails()) {
+                return redirect()->route('referees')->with("error" ,"el formato del excel no es el correcto");   
+            }
+        }
+
+        /**LEEMOS EL EXCEL Y LO ALMACENAMOS EN LA BASE DE DATOS */
         foreach ($array[0] as $rows) {
             $user = User::create([
                 'arb_cod' => (int)$rows[0],
@@ -69,7 +112,7 @@ class UserController extends Controller
             $user->assignRole('arbitro');
         }
         //dd(User::all());
-        return view('users.users',['users' => User::all()]);
+        return redirect()->route('referees')->with("message" ,"Se han añadido los árbitros");
     }
 
     public function updateUser(Request $request){
@@ -79,7 +122,7 @@ class UserController extends Controller
             if (Auth::id()->role()=='admin') {
                 $user=User::find($request->id);
             }else{
-                return ["message" => "No tienes permisos para editar este perfil"];
+                return redirect()->route('referees')->with("error" ,"No tienes permisos para editar este perfil");
             }
         }
         //return $request->all();
@@ -89,6 +132,8 @@ class UserController extends Controller
             "surname" => $request->surname,
             "email" => $request->email,
         ]);
-        return ["message" => "Se han actualizado los datos del perfil"];
+        return redirect()->route('referees')->with("message" ,"Se han actualizado los datos del perfil");
     }
+
+
 }

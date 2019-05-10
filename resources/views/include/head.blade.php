@@ -9,7 +9,7 @@
 
 <!-- Scripts -->
 <script src="{{ asset('js/app.js') }}" ></script>
-
+<script src="{{ asset('js/toast.js') }}" ></script>
 <script src="{{ asset('js/js.js') }}" defer></script>
 
 <!-- Fonts -->
@@ -18,5 +18,6 @@
 
 <!-- Styles -->
 <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+<link href="{{ asset('css/toast.css') }}" rel="stylesheet">
 <link href="{{ asset('css/css.css') }}" rel="stylesheet">
 <link href="{{ asset('css/login.css') }}" rel="stylesheet">

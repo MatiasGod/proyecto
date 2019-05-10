@@ -38,11 +38,12 @@ td,th{
                             <input type="checkbox" :name="category.category" :value="category.id" v-model="arr[key]" class="col-md-1" :disabled="disabled == 1 ? true : false">
                         </div>
                     </div>
-                    
-                    <input class="btn btn-primary btn-block" type="submit" value="Modificar" v-if="disabled == 0 ? true : false">
+                    <div class="form-group justify-content-center row">
+                        <input class="col-md-6 btn btn-warning" type="submit" value="Modificar" v-if="disabled == 0 ? true : false">
+                    </div>
                 </form>
-                <button class="col-md-8 btn btn-block" @click="disabled = (disabled + 1) % 2" v-if="disabled == 0 ? true : false">Terminar</button>
-                <button class="col-md-8 btn btn-block" @click="disabled = (disabled + 1) % 2" v-if="disabled == 0 ? false : true">Editar</button>
+                    <button class="col-md-7 btn mt-4 btn-dark" @click="disabled = (disabled + 1) % 2" v-if="disabled == 0 ? true : false">Quitar Edición</button>
+                    <button class="col-md-8 btn btn-dark" @click="disabled = (disabled + 1) % 2" v-if="disabled == 0 ? false : true">Editar</button>
             </div>
             
         </div>

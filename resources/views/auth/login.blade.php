@@ -46,15 +46,6 @@
                         </div>
                     </div>
 
-                    <div class="row justify-content-md-center">
-                        <div class="col-md-4">
-                            @if (Route::has('password.request'))
-                                <a class="btn btn-primary btn-block" href="{{ route('password.request') }}" id="log-btn">
-                                    {{ __('Recuperar Contraseña') }}
-                                </a>
-                            @endif
-                        </div>
-                    </div>
                 </form>
             </div>
             

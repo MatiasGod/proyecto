@@ -1,22 +1,39 @@
 @extends('layouts.app')
 @section('content')
 <style>
-*{
-    
-}
 td,th{
     padding: 10px;
     color:white;
 }
+.fantasma{
+    background:#343A40;
+    border-color:white;
+    color:white;
+}
+.fantasma:hover{
+    background:white;
+    color:#343A40;
+}
+.fantasma2{
+    background:#343A40;
+    border-color:white;
+    color:white;
+}
+.fantasma2:hover{
+    background:#571845;
+    border-color:#571845;
+    color:white;
+}
 </style>
+@include('show_messages')
 <div class="" id="app">
     
     <div class="row justify-content-start">
         <div class="col-md-7 my-auto">  
             <label for="" class="col-md-3 text-light">Buscar Equipo</label>
-            <input type="text" class="col-md-4" name="busqueda" v-model="teamSearch" id="" @blur="searchTeam(teamSearch)"><br>
+            <input type="text" class="col-md-4" name="busqueda" v-model="teamSearch" @keyup.enter="searchTeam(teamSearch)" @blur="searchTeam(teamSearch)"><br>
             <label for="" class="col-md-3 text-light">Buscar Categoría</label>
-            <input type="text" class="col-md-4" name="busqueda" v-model="categorySearch" id="" @blur="searchCategory(categorySearch)">
+            <input type="text" class="col-md-4" name="busqueda" v-model="categorySearch" @keyup.enter="searchCategory(categorySearch)" @blur="searchCategory(categorySearch)">
         </div>
         @role('admin')
         <div class="col-md-1 my-auto">
@@ -47,10 +64,10 @@ td,th{
                 <tr>
                     <td>@{{team.name}}</td>
                     <td>
-                        <button class="btn btn-primary ml-5" @click="gosh(team.name)">Mostrar</button>
+                        <button class="btn fantasma"  @click="gosh(team.name)">Mostrar</button>
                     </td>
                     @role('admin')
-                    <td><a :href="'/teamInfo/' + team.id">Modificar</a></td>
+                    <td><a class="btn fantasma2" :href="'/teamInfo/' + team.id">Modificar</a></td>
                     @endrole
                     
                 </tr>
@@ -59,9 +76,15 @@ td,th{
                     <td>@{{category.category}}</td>
                     <td></td>
                 </tr>
+                
             </tbody>
         </table>
-        <span v-if="message">@{{message}}</span>
+        <div v-if="message" class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Guacamoles!</strong> @{{message}}.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
     </div>
 </div>
     

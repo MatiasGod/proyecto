@@ -17,37 +17,33 @@ Auth::routes();
 
 
 
-Route::group(['middleware' => 'auth'], function () {});
+Route::group(['middleware' => 'auth'], function () {
     Route::group(['middleware' => ['role:admin']], function () {
-    
+        Route::get('deleteUser/{id}', 'UserController@delete')->name('deleteUser');
+        Route::get('userTrash', 'UserController@showTrashed')->name('userTrash');
+        Route::get('restore/{id}', 'UserController@restore')->name('restore');
+        Route::post('createUserFile', 'UserController@createUserFile')->name('createUserFile');
+        
+        Route::post('updateTeam', 'TeamController@updateTeam')->name('updateTeam');
+        Route::post('createTeams', 'TeamController@createteams')->name('createTeams');
+        
+        Route::post('updateMatch', 'MatchController@updateMatch')->name('updateMatch');
+        Route::post('loadMatchs', 'MatchController@loadMatchs')->name('loadMatchs');
     });
-    Route::group(['middleware' => ['role:arbitro']], function () {
-    });
+
     Route::get('/home',function () { return view('menu'); })->name('home');
     Route::get('/menu', function () { return view('menu'); })->name('menu');
-    //Route::get('match_view',  function () { return view('matchs.partidos'); })->name('match_view');
-    Route::get('match_view', 'ExcelController@matchs')->name('match_view');
-    //cargar fichero excel y guardar en la base datos.
-    Route::get('referees', 'UserController@getUsers')->name('referees');
-    Route::get('updateInfo/{id}', 'UserController@updateInformation')->name('updateInfo');
-    Route::get('getAllUsers', 'UserController@getAllUsers')->name('getAllUsers');
-
+    
     /**
      *  USUARIOS
      */
-
+    Route::get('updateInfo/{id}', 'UserController@updateInformation')->name('updateInfo');
+    Route::get('getAllUsers', 'UserController@getAllUsers')->name('getAllUsers');
+    Route::get('referees', 'UserController@getUsers')->name('referees');
     Route::get('profile', 'UserController@getProfile')->name('profile');
     Route::post('UpdateProfile', 'UserController@updateUser')->name('UpdateProfile');
-    Route::get('deleteUser/{id}', 'UserController@delete')->name('deleteUser');
-    Route::get('userTrash', 'UserController@showTrashed')->name('userTrash');
-    Route::get('restore/{id}', 'UserController@restore')->name('restore');
     Route::get('buscar/{name}', 'UserController@getSomeUsers')->name('busar');
-    Route::post('createUserFile', 'UserController@createUserFile')->name('createUserFile');
-    Route::get('formUser', function(){
-        return view('users.createUser');
-    })->name('formUser');
-
-
+    
     /**
      *  EQUIPOS
      */
@@ -56,24 +52,18 @@ Route::group(['middleware' => 'auth'], function () {});
     Route::get('getSomeTeams', 'TeamController@getSomeTeams')->name('getSomeTeams');
     Route::get('searchTeam/{name}', 'TeamController@getSomeTeams')->name('searchTeam');
     Route::get('searchCategory/{name}', 'TeamController@searchCategory')->name('searchCategory');
-    Route::post('createTeams', 'TeamController@createteams')->name('createTeams');
     Route::get('teamInfo/{id}', 'TeamController@teamInfo')->name('teamInfo');
-    Route::post('updateTeam', 'TeamController@updateTeam')->name('updateTeam');
-
+    
     /**
      *  PARTIDOS
      */
+    Route::get('match_view', 'ExcelController@matchs')->name('match_view');
     Route::get('matchs', 'MatchController@getMatchs')->name('matchs');
-    Route::get('matchsDay', 'MatchController@getMatchsDay')->name('matchs');
+    Route::get('getMatchsAxiosLocation', 'MatchController@getMatchsAxiosLocation')->name('getMatchsAxiosLocation');
+    Route::get('searchMatchByLocation/{location}', 'MatchController@searchMatchByLocation')->name('searchMatchByLocation');
+    Route::get('getMatchsAxiosCategory', 'MatchController@getMatchsAxiosCategory')->name('getMatchsAxiosCategory');
+    Route::get('searchMatchByCategory/{category}', 'MatchController@searchMatchByCategory')->name('searchMatchByCategory');
     
-    Route::get('searchMatchByLocation/{location}', 'MatchController@getMatchs')->name('matchs');
-    Route::get('searchMatchByTeam/{team}', 'MatchController@getMatchs')->name('matchs');
-    Route::get('searchMatchByTime/{time}', 'MatchController@getMatchs')->name('matchs');
-    Route::get('searchMatchByReferee/{referee}', 'MatchController@getMatchs')->name('matchs');
-
-    Route::get('setReferees', 'MatchController@getMatchs')->name('matchs');
-
-    Route::post('loadMatchs', 'MatchController@loadMatchs')->name('matchs');
-
 
     /**CUIDADO ES PARA CARGAR PARTIDOS NO PARA FUNCIONALIDAD */
+});

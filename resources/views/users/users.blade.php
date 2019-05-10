@@ -1,25 +1,23 @@
 @extends('layouts.app')
 @section('content')
 <style>
-*{
-    
-}
 td,th{
     padding: 10px;
     color:white;
 }
 </style>
+@include('show_messages')
 <div class="" id="app">
     
     <div class="row justify-content-start">
         <div class="col-md-6 my-auto">
-            <label for="" class="col-md-2    text-light">Buscar</label>
-            <input type="text" name="busqueda" class="col-md-4" v-model="busqueda" id="" @blur="search(busqueda)">
+            <label for="" class="col-md-2 text-light">Buscar</label>
+            <input type="text" name="busqueda" class="col-md-4" v-model="busqueda" @keyup.enter="search(busqueda)" @blur="search(busqueda)">
 
         </div>
         @role('admin')
         <div class="col-md-2 my-auto">
-            <button class="btn m-auto ml-5 text-light" class="" @click="gosh">Mostrar Eliminados</button>
+            <button class="btn m-auto ml-5 border border-light text-light" @click="gosh">Mostrar Eliminados</button>
         </div>
         <div class="col-md-4">
             <form action="{{ url('createUserFile') }}" method="post" enctype="multipart/form-data">
@@ -62,7 +60,6 @@ td,th{
                 </tr>
             </tbody>
         </table>
-        <span v-if="message">@{{message}}</span>
         <table class="table table-dark" v-if="disabled == 1 ? true : false">
             <thead>
                 <tr>
@@ -92,8 +89,14 @@ td,th{
             </tbody>
         </table>
 
-
-
+        <!-- <span v-if="message">@{{message}}</span> -->
+        <div v-if="message" class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>@{{message}}</strong> .
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        
     </div>
 </div>
     

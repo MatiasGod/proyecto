@@ -50,11 +50,11 @@ td,th{
                             <input type="email"  name="email" v-model="user.email" class="form-control-plaintext" :disabled="disabled == 1 ? true : false"id="staticEmail">
                         </div>
                     </div>
-
-                    <input class="btn btn-primary btn-block" type="submit" value="Modificar" v-if="disabled == 0 ? true : false">
+    
+                    <input class="btn btn-warning m-auto col-md-12" type="submit" value="Modificar" v-if="disabled == 0 ? true : false">
                 </form>
-                    <button class="col-md-8 btn btn-block" @click="disabled = (disabled + 1) % 2" v-if="disabled == 0 ? true : false">Terminar</button>
-                    <button class="col-md-8 btn btn-block" @click="disabled = (disabled + 1) % 2" v-if="disabled == 0 ? false : true">Editar</button>
+                    <button class="col-md-9 btn mt-4 btn-dark" @click="disabled = (disabled + 1) % 2" v-if="disabled == 0 ? true : false">Terminar</button>
+                    <button class="col-md-8 btn btn-dark" @click="disabled = (disabled + 1) % 2" v-if="disabled == 0 ? false : true">Editar</button>
             </div>
         </div>
     </div>
